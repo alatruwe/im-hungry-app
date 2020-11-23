@@ -17,8 +17,14 @@
 
 
 /******** EVENT HANDLER FUNCTIONS ********/
-//function handleStartClick()
+function handleStartClick() {
   //event click button
+  $('form').submit(event => {
+    event.preventDefault();
+    console.log("handleStartClick")
+    
+  });
+}  
   //api call for recipe details - function getRandomRecipe() => return details
   //function displayRecipe(details)
 
@@ -36,10 +42,11 @@
   //event click button Done
   //function homeScreen()  
 
-//function startApp()
-  //handleStartClick()
+function startApp() {
+  handleStartClick()
   //handleAcceptRecipe()
   //handleNewRecipe()
   //handleEndRecipe()
+}
 
-//$(startApp);
+$(startApp);
