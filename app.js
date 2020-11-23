@@ -10,7 +10,25 @@ const apiKey = '306dc4a6c06d4f93835642153baafd56';
 
 /******** RENDER FUNCTIONS ********/
 //function homeScreen()
-//function displayRecipe(details)
+function displayRecipe(details) {
+  $('.recipe-content').append(
+    `
+    <img src="${details.recipes[0].image}" alt="pic of the dish">
+    <h3>${details.recipes[0].title}</h3>
+    <p>Ready in: ${details.recipes[0].readyInMinutes} minutes</p>
+    <p>Servings: ${details.recipes[0].servings}</p>
+
+    `
+  )
+  $('form').empty();
+  $('.buttons').append(
+    `
+    <input class="btn" value="Yum!" type="submit">
+    <input class="btn" value="No thank you!"type="submit">
+    `
+  );
+  $('.recipe-content').removeClass('hidden');
+}
 //function displayInstructions(instructions)
 //function endRecipe()
 
@@ -30,11 +48,9 @@ function getRandomRecipe() {
     number: 1,
     apiKey: apiKey
   }
-
+  //build api url to call to get a random recipe
   const queryString = buildQueryParams(params);
-  console.log("queryString is: " + queryString);
   const apiRandomRecipe = baseUrl + randomRecipeEndpoint + '?' + queryString;
-  console.log('apiRandomRecipe is: ' + apiRandomRecipe)
 
   fetch(apiRandomRecipe)
   .then(response => {
@@ -43,7 +59,7 @@ function getRandomRecipe() {
     }
     throw new Error(response.statusText);
   })
-  .then(responseJson => console.log(responseJson))
+  .then(responseJson => displayRecipe(responseJson))
   .catch(error => {
     $('.recipe-content').text(`An error occured: ${error.message}`);
   });
@@ -61,7 +77,6 @@ function handleStartClick() {
 
     //api call for recipe details - function getRandomRecipe() => return details
     const details = getRandomRecipe();
-    console.log(details);
   });
 }  
   //function displayRecipe(details)
