@@ -23,8 +23,8 @@ function displayRecipe(details) {
   $('form').empty();
   $('.buttons').append(
     `
-    <input class="btn" value="Yum!" type="submit">
-    <input class="btn" value="No thank you!"type="submit">
+    <input class="btn accept-recipe" value="Yum!" type="submit">
+    <input class="btn refuse-recipe" value="No thank you!"type="submit">
     `
   );
   $('.recipe-content').removeClass('hidden');
@@ -74,9 +74,7 @@ function handleStartClick() {
   $('form').submit(event => {
     event.preventDefault();
     console.log("handleStartClick");
-
-    //api call for recipe details - function getRandomRecipe() => return details
-    const details = getRandomRecipe();
+    getRandomRecipe();
   });
 }  
   //function displayRecipe(details)
@@ -86,7 +84,17 @@ function handleStartClick() {
   //api call for recipe instructions - function getRecipeInstructions() => return instructions
   //function displayInstructions(instructions)
 
-//function handleNewRecipe()
+function handleNewRecipe() {
+    //event click NO button 
+    $('.buttons').on('click', '.refuse-recipe', (event) => {
+      event.preventDefault();
+      console.log("handleNewRecipe");
+      //display new recipe
+      $('.recipe-content').empty();
+      $('.buttons').empty();
+      getRandomRecipe()
+    });
+}
   //event click NO button 
   //api call for recipe details - function getRandomRecipe() => return details
   //function displayRecipe(details)
@@ -98,7 +106,7 @@ function handleStartClick() {
 function startApp() {
   handleStartClick()
   //handleAcceptRecipe()
-  //handleNewRecipe()
+  handleNewRecipe()
   //handleEndRecipe()
 }
 
