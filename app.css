@@ -21,6 +21,10 @@ header h1 {
   flex-direction: column;
 }
 
+.hidden {
+  display: none;
+}
+
 form {
   display: flex;
   flex-direction: column;
