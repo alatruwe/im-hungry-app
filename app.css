@@ -21,7 +21,8 @@ header h1 {
   flex-direction: column;
 }
 
-.hidden {
+.hidden,
+.hidden-instructions {
   display: none;
 }
 

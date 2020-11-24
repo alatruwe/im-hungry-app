@@ -4,32 +4,55 @@
 - Base URL: https://api.spoonacular.com/
 */
 const baseUrl = 'https://api.spoonacular.com/';
-const randomRecipeEndpoint = 'recipes/random'
+const randomRecipeEndpoint = 'recipes/random';
+const recipeSearchendpoint = 'recipes/complexSearch';
 const apiKey = '306dc4a6c06d4f93835642153baafd56';
-
 
 /******** RENDER FUNCTIONS ********/
 //function homeScreen()
 function displayRecipe(details) {
+  console.log(details);
+  //add recipe pic, title, time amd servings
   $('.recipe-content').append(
     `
-    <img src="${details.recipes[0].image}" alt="pic of the dish">
-    <h3>${details.recipes[0].title}</h3>
-    <p>Ready in: ${details.recipes[0].readyInMinutes} minutes</p>
-    <p>Servings: ${details.recipes[0].servings}</p>
+    <img src=" ` + details.recipes[0].image + ` " alt="pic of the dish">
+    <h2 class="title">${details.recipes[0].title}</h2>
+    <p class="time">Ready in: ${details.recipes[0].readyInMinutes} minutes</p>
+    <p class="servings">Servings: ${details.recipes[0].servings}</p>
 
     `
   )
+  //add and hide recipe instructions
+  if (details.recipes[0].instructions.length === 0) {
+    $('.recipe-content').append(
+      `<h3 class="instructions hidden-instructions">Sorry, we don't have the instructions for this recipe</h3>`
+    );}
+  else {
+    $('.recipe-content').append(
+      `<div class="instructions hidden-instructions">
+        <h3>Instructions:</h3>`
+        + details.recipes[0].instructions +
+      `</div>`
+    );
+  }
+  //add buttons
   $('form').empty();
   $('.buttons').append(
     `
     <input class="btn accept-recipe" value="Yum!" type="submit">
     <input class="btn refuse-recipe" value="No thank you!"type="submit">
+    <input class="btn end-recipe hidden-instructions" value="Done" type="submit">
     `
   );
   $('.recipe-content').removeClass('hidden');
 }
-//function displayInstructions(instructions)
+
+function displayInstructions() {
+  console.log("display instructions");
+  //hide time, servings, buttons and display instructions and end button
+  $('.time, .servings, .accept-recipe, .refuse-recipe').addClass('hidden');
+  $('.instructions, .end-recipe').removeClass('hidden-instructions');
+}
 //function endRecipe()
 
 
@@ -45,7 +68,7 @@ function getRandomRecipe() {
   //api call for recipe details
   const params = {
     limitLicense: "true",
-    number: 1,
+    number: 10,
     apiKey: apiKey
   }
   //build api url to call to get a random recipe
@@ -63,9 +86,7 @@ function getRandomRecipe() {
   .catch(error => {
     $('.recipe-content').text(`An error occured: ${error.message}`);
   });
-}
-
-//function getRecipeInstructions()
+} 
 
 
 /******** EVENT HANDLER FUNCTIONS ********/
@@ -77,37 +98,32 @@ function handleStartClick() {
     getRandomRecipe();
   });
 }  
-  //function displayRecipe(details)
 
-//function handleAcceptRecipe()
+function handleAcceptRecipe() {
   //event click OK button
-  //api call for recipe instructions - function getRecipeInstructions() => return instructions
-  //function displayInstructions(instructions)
+  $('.buttons').on('click', '.accept-recipe', (event) => {
+    event.preventDefault();
+    console.log("handleAcceptRecipe");
+    displayInstructions();
+  })
+}  
 
-function handleNewRecipe() {
+function handleRefuseRecipe() {
     //event click NO button 
     $('.buttons').on('click', '.refuse-recipe', (event) => {
       event.preventDefault();
-      console.log("handleNewRecipe");
+      console.log("handleRefuseRecipe");
       //display new recipe
       $('.recipe-content').empty();
       $('.buttons').empty();
       getRandomRecipe()
     });
 }
-  //event click NO button 
-  //api call for recipe details - function getRandomRecipe() => return details
-  //function displayRecipe(details)
-
-//function handleEndRecipe()
-  //event click button Done
-  //function homeScreen()  
 
 function startApp() {
   handleStartClick()
-  //handleAcceptRecipe()
-  handleNewRecipe()
-  //handleEndRecipe()
+  handleAcceptRecipe()
+  handleRefuseRecipe()
 }
 
 $(startApp);
