@@ -5,14 +5,12 @@
 */
 const baseUrl = 'https://api.spoonacular.com/';
 const randomRecipeEndpoint = 'recipes/random';
-const recipeSearchendpoint = 'recipes/complexSearch';
 const apiKey = '306dc4a6c06d4f93835642153baafd56';
 
 /******** RENDER FUNCTIONS ********/
-//function homeScreen()
 function displayRecipe(details) {
   console.log(details);
-  //add recipe pic, title, time amd servings
+  //add recipe pic, title, time and servings
   $('.recipe-content').append(
     `
     <img src=" ` + details.recipes[0].image + ` " alt="pic of the dish">
@@ -36,7 +34,7 @@ function displayRecipe(details) {
     );
   }
   //add buttons
-  $('form').empty();
+  $('.start-recipe').addClass('hidden');
   $('.buttons').append(
     `
     <input class="btn accept-recipe" value="Yum!" type="submit">
@@ -53,7 +51,16 @@ function displayInstructions() {
   $('.time, .servings, .accept-recipe, .refuse-recipe').addClass('hidden');
   $('.instructions, .end-recipe').removeClass('hidden-instructions');
 }
-//function endRecipe()
+
+function endRecipe() {
+  //display start screen
+  $('.recipe-content').empty();
+  $('.buttons').empty();
+  $('.recipe-content').addClass('hidden');
+  $('.buttons').append(`
+    <input class="btn start-recipe" value="Find something to cook" type="submit">
+  `);
+}
 
 
 /******** API CALL FUNCTIONS ********/
@@ -68,7 +75,7 @@ function getRandomRecipe() {
   //api call for recipe details
   const params = {
     limitLicense: "true",
-    number: 10,
+    number: 1,
     apiKey: apiKey
   }
   //build api url to call to get a random recipe
@@ -92,7 +99,7 @@ function getRandomRecipe() {
 /******** EVENT HANDLER FUNCTIONS ********/
 function handleStartClick() {
   //event click button
-  $('form').submit(event => {
+  $('.buttons').on('click', '.start-recipe', event => {
     event.preventDefault();
     console.log("handleStartClick");
     getRandomRecipe();
@@ -120,10 +127,20 @@ function handleRefuseRecipe() {
     });
 }
 
+function handleEndRecipe() {
+  //event click Done button
+  $('.buttons').on('click', '.end-recipe', (event) => {
+    event.preventDefault();
+    console.log("handleEndRecipe");
+    endRecipe();
+  });
+}
+
 function startApp() {
   handleStartClick()
   handleAcceptRecipe()
   handleRefuseRecipe()
+  handleEndRecipe()
 }
 
 $(startApp);
