@@ -16,7 +16,7 @@ function displayRecipe(details) {
     );
   } else {
     $('.recipe-content').append(
-      `<img src="${details.recipes[0].image}" alt="picture of the dish">`
+      `<img src="${details.recipes[0].image}" width=100% alt="picture of the dish">`
     );
   }
   // add title, time and servings
@@ -45,7 +45,7 @@ function displayRecipe(details) {
   $('.start-recipe').addClass('hidden');
   $('.buttons').append(
     `
-    <input class="btn accept-recipe" value="Yum!" type="submit">
+    <input class="btn accept-recipe" value="Yum! I want that" type="submit">
     <input class="btn refuse-recipe" value="No thank you!"type="submit">
     <input class="btn end-recipe hidden-instructions" value="Done" type="submit">
     `
