@@ -9,13 +9,19 @@ const apiKey = '306dc4a6c06d4f93835642153baafd56';
 
 /******** RENDER FUNCTIONS ********/
 function displayRecipe(details) {
-  console.log(details);
-  // add recipe pic, title, time and servings
+  // add recipe pic
+  if (details.recipes[0].image.length === 0) {
+    $('.recipe-content').append(
+      `<h3>We don't have a picture for this recipe, but we're sure it's delicious!</h3>`
+    );
+  } else {
+    $('.recipe-content').append(
+      `<img src="${details.recipes[0].image}" alt="picture of the dish">`
+    );
+  }
+  // add title, time and servings
   $('.recipe-content').append(
     `
-    <img src=" ` +
-      details.recipes[0].image +
-      ` " alt="pic of the dish">
     <h2 class="title">${details.recipes[0].title}</h2>
     <p class="time">Ready in: ${details.recipes[0].readyInMinutes} minutes</p>
     <p class="servings">Servings: ${details.recipes[0].servings}</p>
@@ -48,14 +54,13 @@ function displayRecipe(details) {
 }
 
 function displayInstructions() {
-  console.log('display instructions');
   // hide time, servings, buttons and display instructions and end button
   $('.time, .servings, .accept-recipe, .refuse-recipe').addClass('hidden');
   // display instructions
   $('.instructions, .end-recipe').removeClass('hidden-instructions');
 }
 
-function endRecipe() {
+function restart() {
   //display start screen
   $('.recipe-content').addClass('hidden');
   $('.buttons').append(`
@@ -100,7 +105,6 @@ function handleGetRecipe() {
   // event click button
   $('.buttons').on('click', '.start-recipe', (event) => {
     event.preventDefault();
-    console.log('handleStartClick');
     getRandomRecipe().then((responseJson) => displayRecipe(responseJson));
   });
 }
@@ -109,7 +113,6 @@ function handleAcceptRecipe() {
   // event click OK button
   $('.buttons').on('click', '.accept-recipe', (event) => {
     event.preventDefault();
-    console.log('handleAcceptRecipe');
     displayInstructions();
   });
 }
@@ -118,7 +121,6 @@ function handleRefuseRecipe() {
   // event click NO button
   $('.buttons').on('click', '.refuse-recipe', (event) => {
     event.preventDefault();
-    console.log('handleRefuseRecipe');
     // display new recipe
     $('.recipe-content').empty();
     $('.buttons').empty();
@@ -130,10 +132,9 @@ function handleRestart() {
   // event click Done button
   $('.buttons').on('click', '.end-recipe', (event) => {
     event.preventDefault();
-    console.log('handleEndRecipe');
     $('.recipe-content').empty();
     $('.buttons').empty();
-    endRecipe();
+    restart();
   });
 }
 
