@@ -9,6 +9,7 @@ const apiKey = '306dc4a6c06d4f93835642153baafd56';
 
 /******** RENDER FUNCTIONS ********/
 function displayRecipe(details) {
+  console.log(details);
   // add recipe pic
   if (details.recipes[0].image.length === 0) {
     $('.recipe-content').append(
@@ -83,6 +84,7 @@ function getRandomRecipe() {
   const params = {
     limitLicense: 'true',
     number: 1,
+    tags: 'meat',
     apiKey: apiKey,
   };
   // build api url to call to get a random recipe
