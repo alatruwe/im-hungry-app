@@ -63,6 +63,17 @@ function displayInstructions() {
   $('.instructions, .end-recipe').removeClass('hidden-instructions');
 }
 
+function displayLocationForm() {
+  console.log('displayLocationForm');
+  $('.restaurant-content').append(
+    `
+      <label for="user-location">Location:</label>
+      <input id="user-location" type="text" name="user-location" required>
+      <input class="location" value="Go" type="submit">
+    `
+  );
+}
+
 /* function displayRestaurant(){
   display list of restaurants
 }*/
@@ -105,9 +116,9 @@ function getRandomRecipe() {
     });
 }
 
-/* function getRestaurant() {
-  return api response
-}*/
+function getRestaurant(location) {
+  console.log('getrestaurant ' + location);
+}
 
 /******** EVENT HANDLER FUNCTIONS ********/
 function handleGetRecipe() {
@@ -136,11 +147,23 @@ function handleRefuseRecipe() {
   });
 }
 
-/*function handleGetRestaurant() {
-  // add form to ask for a location
-  // save location
-  // call api with getRestaurant() and displayRestaurant()
-}*/
+function handleFindRestaurant() {
+  $('.buttons').on('click', '.start-restaurant', (event) => {
+    event.preventDefault();
+    console.log('handleFindRestaurant');
+    displayLocationForm();
+  });
+}
+
+function handleGetLocation() {
+  $('.restaurant-content').on('click', '.location', (event) => {
+    event.preventDefault();
+    console.log('handleGetLocation');
+    const location = $('#user-location').val();
+    getRestaurant(location);
+  });
+}
+// call api with getRestaurant() and displayRestaurant()
 
 function handleRestart() {
   // event click Done button
@@ -156,6 +179,8 @@ function startApp() {
   handleAcceptRecipe();
   handleRefuseRecipe();
   handleRestart();
+  handleFindRestaurant();
+  handleGetLocation();
 }
 
 $(startApp);
