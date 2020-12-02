@@ -59,24 +59,12 @@ function displayInstructions() {
   $('.instructions, .end-recipe').removeClass('hidden-instructions');
 }
 
-function displayLocationForm() {
-  console.log('displayLocationForm');
-  $('.restaurant-content').append(
-    `
-      <label for="user-location">Location:</label>
-      <input id="user-location" type="text" name="user-location" required>
-      <input class="location" value="Go" type="submit">
-    `
-  );
-}
-
-/* function displayRestaurant(){
-  display list of restaurants
-}*/
-
 function restart() {
   //display start screen
   $('.recipe-content').addClass('hidden');
+  $('.buttons').append(`
+    <input class="btn start-recipe" value="Find something to cook" type="submit">
+  `);
 }
 
 /******** API CALL FUNCTIONS ********/
@@ -111,10 +99,6 @@ function getRandomRecipe() {
     });
 }
 
-function getRestaurant(location) {
-  console.log('getrestaurant ' + location);
-}
-
 /******** EVENT HANDLER FUNCTIONS ********/
 function handleGetRecipe() {
   // event click button
@@ -142,24 +126,6 @@ function handleRefuseRecipe() {
   });
 }
 
-function handleFindRestaurant() {
-  $('.buttons').on('click', '.start-restaurant', (event) => {
-    event.preventDefault();
-    console.log('handleFindRestaurant');
-    displayLocationForm();
-  });
-}
-
-function handleGetLocation() {
-  $('.restaurant-content').on('click', '.location', (event) => {
-    event.preventDefault();
-    console.log('handleGetLocation');
-    const location = $('#user-location').val();
-    getRestaurant(location);
-  });
-}
-// call api with getRestaurant() and displayRestaurant()
-
 function handleRestart() {
   // event click Done button
   $('.recipe-content').on('click', '.end-recipe', (event) => {
@@ -174,8 +140,6 @@ function startApp() {
   handleAcceptRecipe();
   handleRefuseRecipe();
   handleRestart();
-  handleFindRestaurant();
-  handleGetLocation();
 }
 
 $(startApp);
