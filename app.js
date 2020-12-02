@@ -42,7 +42,7 @@ function displayRecipe(details) {
     );
   }
   // add buttons
-  $('.recipe-content').append(
+  $('.buttons').append(
     `
     <input class="btn accept-recipe" value="Yum! I want that" type="submit">
     <input class="btn refuse-recipe" value="No thank you!"type="submit">
@@ -50,6 +50,7 @@ function displayRecipe(details) {
     `
   );
   $('.recipe-content').removeClass('hidden');
+  $('.start-recipe').addClass('hidden');
 }
 
 function displayInstructions() {
@@ -62,8 +63,9 @@ function displayInstructions() {
 function restart() {
   //display start screen
   $('.recipe-content').addClass('hidden');
-  $('.buttons').append(`
-    <input class="btn start-recipe" value="Find something to cook" type="submit">
+  $('.buttons').empty();
+  $('.buttons')
+    .append(`<input class="btn start-recipe" value="Find something to cook" type="submit">
   `);
 }
 
@@ -110,7 +112,7 @@ function handleGetRecipe() {
 
 function handleAcceptRecipe() {
   // event click OK button
-  $('.recipe-content').on('click', '.accept-recipe', (event) => {
+  $('.buttons').on('click', '.accept-recipe', (event) => {
     event.preventDefault();
     displayInstructions();
   });
@@ -118,17 +120,17 @@ function handleAcceptRecipe() {
 
 function handleRefuseRecipe() {
   // event click NO button
-  $('.recipe-content').on('click', '.refuse-recipe', (event) => {
+  $('.buttons').on('click', '.refuse-recipe', (event) => {
     event.preventDefault();
     // display new recipe
-    $('.recipe-content').empty();
+    $('.recipe-content, .buttons').empty();
     getRandomRecipe().then((responseJson) => displayRecipe(responseJson));
   });
 }
 
 function handleRestart() {
   // event click Done button
-  $('.recipe-content').on('click', '.end-recipe', (event) => {
+  $('.buttons').on('click', '.end-recipe', (event) => {
     event.preventDefault();
     $('.recipe-content').empty();
     restart();
