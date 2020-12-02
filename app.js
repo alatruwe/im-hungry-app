@@ -3,8 +3,9 @@
 - API key: 306dc4a6c06d4f93835642153baafd56
 - Base URL: https://api.spoonacular.com/
 */
-const baseUrl = 'https://api.spoonacular.com/';
-const randomRecipeEndpoint = 'recipes/random';
+const baseUrl = 'https://api.spoonacular.com/recipes/';
+const randomRecipeEndpoint = 'random';
+const nutritionEndpoint = '/nutritionWidget.json';
 const apiKey = '306dc4a6c06d4f93835642153baafd56';
 
 /******** RENDER FUNCTIONS ********/
@@ -52,6 +53,9 @@ function displayRecipe(details) {
   );
   $('.recipe-content').removeClass('hidden');
   $('.start-recipe').addClass('hidden');
+  // call api for nutrition info
+  const recipeId = details.recipes[0].id;
+  console.log(getNutrition(recipeId));
 }
 
 function displayInstructions() {
@@ -92,6 +96,27 @@ function getRandomRecipe() {
   const apiRandomRecipe = baseUrl + randomRecipeEndpoint + '?' + queryString;
 
   return fetch(apiRandomRecipe)
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error(response.statusText);
+    })
+    .catch((error) => {
+      $('.recipe-content').text(`An error occured: ${error.message}`);
+    });
+}
+
+function getNutrition(recipeId) {
+  console.log('recipe id is: ' + recipeId);
+  const params = {
+    apiKey: apiKey,
+  };
+  const queryString = buildQueryParams(params);
+  const apiNutrition =
+    baseUrl + recipeId + nutritionEndpoint + '?' + queryString;
+
+  return fetch(apiNutrition)
     .then((response) => {
       if (response.ok) {
         return response.json();
