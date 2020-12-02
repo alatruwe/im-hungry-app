@@ -51,16 +51,29 @@ function displayRecipe(details) {
     <input class="btn end-recipe hidden-instructions" value="Done" type="submit">
     `
   );
-  $('.recipe-content').removeClass('hidden');
-  $('.start-recipe').addClass('hidden');
   // call api for nutrition info
   const recipeId = details.recipes[0].id;
-  console.log(getNutrition(recipeId));
+  getNutrition(recipeId).then((responseJson) => displayNutrition(responseJson));
+
+  $('.recipe-content').removeClass('hidden');
+  $('.start-recipe').addClass('hidden');
+}
+
+function displayNutrition(details) {
+  console.log(details);
+  $('.recipe-content').append(`
+    <p class="nutrition-content">Nutrition: </p>
+    <p class="carbs">carbs: ${details.carbs}</p>
+    <p class="fat">fat: ${details.fat}</p>
+    <p class="protein">protein: ${details.protein}</p>
+  `);
 }
 
 function displayInstructions() {
   // hide time, servings, buttons and display instructions and end button
-  $('.time, .servings, .accept-recipe, .refuse-recipe').addClass('hidden');
+  $(
+    '.time, .servings, .nutrition-content, .carbs, .fat, .protein, .accept-recipe, .refuse-recipe'
+  ).addClass('hidden');
   // display instructions
   $('.instructions, .end-recipe').removeClass('hidden-instructions');
 }
@@ -70,7 +83,7 @@ function restart() {
   $('.recipe-content').addClass('hidden');
   $('.buttons').empty();
   $('.buttons')
-    .append(`<input class="btn start-recipe" value="Find something to cook" type="submit">
+    .append(`<input class="btn start-recipe" value="Find a recipe" type="submit">
   `);
 }
 
@@ -91,7 +104,6 @@ function getRandomRecipe() {
     tags: 'meat',
     apiKey: apiKey,
   };
-  // build api url to call to get a random recipe
   const queryString = buildQueryParams(params);
   const apiRandomRecipe = baseUrl + randomRecipeEndpoint + '?' + queryString;
 
@@ -108,7 +120,7 @@ function getRandomRecipe() {
 }
 
 function getNutrition(recipeId) {
-  console.log('recipe id is: ' + recipeId);
+  // api call for nutrition details
   const params = {
     apiKey: apiKey,
   };
