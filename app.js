@@ -3,15 +3,12 @@
 - API key: 306dc4a6c06d4f93835642153baafd56
 - Base URL: https://api.spoonacular.com/
 */
-const baseUrlApiSpoonacular = 'https://api.spoonacular.com/';
+const baseUrl = 'https://api.spoonacular.com/';
 const randomRecipeEndpoint = 'recipes/random';
-const apiKeyApiSpoonacular = '306dc4a6c06d4f93835642153baafd56';
-const apiHeaderApiYelp =
-  'Bearer IgKbPs4muj6TgBgDOmeX0t_KrFo4MCNZU1XeFk1mMNpGw-Ln4wBtH92R7oQ1atF5jOJHuY3tQNvEqVSloH3wjukb-f5SmmStGEyY7LxEHBaib9qDijNELtxpiqfGX3Yx';
+const apiKey = '306dc4a6c06d4f93835642153baafd56';
 
 /******** RENDER FUNCTIONS ********/
 function displayRecipe(details) {
-  console.log(details);
   // add recipe pic
   if (details.recipes[0].image.length === 0) {
     $('.recipe-content').append(
@@ -25,13 +22,12 @@ function displayRecipe(details) {
   // add title, time and servings
   $('.recipe-content').append(
     `
-    <h2 id="recipe-title">${details.recipes[0].title}</h2>
+    <h2 class="title">${details.recipes[0].title}</h2>
     <p class="time">Ready in: ${details.recipes[0].readyInMinutes} minutes</p>
     <p class="servings">Servings: ${details.recipes[0].servings}</p>
 
     `
   );
-
   // add and hide recipe instructions
   if (details.recipes[0].instructions.length === 0) {
     $('.recipe-content').append(
@@ -97,12 +93,11 @@ function getRandomRecipe() {
   const params = {
     limitLicense: 'true',
     number: 1,
-    apiKey: apiKeyApiSpoonacular,
+    apiKey: apiKey,
   };
   // build api url to call to get a random recipe
   const queryString = buildQueryParams(params);
-  const apiRandomRecipe =
-    baseUrlApiSpoonacular + randomRecipeEndpoint + '?' + queryString;
+  const apiRandomRecipe = baseUrl + randomRecipeEndpoint + '?' + queryString;
 
   return fetch(apiRandomRecipe)
     .then((response) => {
