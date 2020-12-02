@@ -64,6 +64,10 @@ function displayInstructions() {
   $('.instructions, .end-recipe').removeClass('hidden-instructions');
 }
 
+/* function displayRestaurant(){
+  display list of restaurants
+}*/
+
 function restart() {
   //display start screen
   $('.recipe-content').addClass('hidden');
@@ -105,6 +109,10 @@ function getRandomRecipe() {
     });
 }
 
+/* function getRestaurant() {
+  return api response
+}*/
+
 /******** EVENT HANDLER FUNCTIONS ********/
 function handleGetRecipe() {
   // event click button
@@ -132,6 +140,12 @@ function handleRefuseRecipe() {
     getRandomRecipe().then((responseJson) => displayRecipe(responseJson));
   });
 }
+
+/*function handleGetRestaurant() {
+  // add form to ask for a location
+  // save location
+  // call api with getRestaurant() and displayRestaurant()
+}*/
 
 function handleRestart() {
   // event click Done button
