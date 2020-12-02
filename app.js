@@ -68,7 +68,7 @@ function restart() {
   //display start screen
   $('.recipe-content').addClass('hidden');
   $('.buttons').append(`
-    <input class="btn start-recipe" value="Find something to cook" type="submit">
+    <input class="btn start-recipe" value="Find me a recipe" type="submit">
   `);
 }
 
