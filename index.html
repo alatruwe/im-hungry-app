@@ -16,11 +16,15 @@
   <header>
     <h1>I'm hungry!</h1>
   </header>
-  <main class="wrapper">
-    <div class="recipe-content hidden"></div>
-    <div class="buttons">
-      <input class="btn start-recipe" value="Find me a recipe" type="submit">
-    </div> 
+  <main>
+    <section class="buttons">
+      <input class="btn start-recipe" value="Find a recipe" type="submit">
+      <input class="btn start-restaurant" value="Find a restaurant" type="submit">
+    </section>
+    <section class="content wrapper">
+      <div class="recipe-content hidden"></div>
+      <div class="restaurant-content"></div>
+    </section>
   </main>
   <script src="https://code.jquery.com/jquery-3.4.1.slim.js" crossorigin="anonymous"></script>
   <script src="app.js"></script>

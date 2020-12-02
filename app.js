@@ -46,8 +46,7 @@ function displayRecipe(details) {
     );
   }
   // add buttons
-  $('.start-recipe').addClass('hidden');
-  $('.buttons').append(
+  $('.recipe-content').append(
     `
     <input class="btn accept-recipe" value="Yum! I want that" type="submit">
     <input class="btn refuse-recipe" value="No thank you!"type="submit">
@@ -71,9 +70,6 @@ function displayInstructions() {
 function restart() {
   //display start screen
   $('.recipe-content').addClass('hidden');
-  $('.buttons').append(`
-    <input class="btn start-recipe" value="Find me a recipe" type="submit">
-  `);
 }
 
 /******** API CALL FUNCTIONS ********/
@@ -124,7 +120,7 @@ function handleGetRecipe() {
 
 function handleAcceptRecipe() {
   // event click OK button
-  $('.buttons').on('click', '.accept-recipe', (event) => {
+  $('.recipe-content').on('click', '.accept-recipe', (event) => {
     event.preventDefault();
     displayInstructions();
   });
@@ -132,11 +128,10 @@ function handleAcceptRecipe() {
 
 function handleRefuseRecipe() {
   // event click NO button
-  $('.buttons').on('click', '.refuse-recipe', (event) => {
+  $('.recipe-content').on('click', '.refuse-recipe', (event) => {
     event.preventDefault();
     // display new recipe
     $('.recipe-content').empty();
-    $('.buttons').empty();
     getRandomRecipe().then((responseJson) => displayRecipe(responseJson));
   });
 }
@@ -149,10 +144,9 @@ function handleRefuseRecipe() {
 
 function handleRestart() {
   // event click Done button
-  $('.buttons').on('click', '.end-recipe', (event) => {
+  $('.recipe-content').on('click', '.end-recipe', (event) => {
     event.preventDefault();
     $('.recipe-content').empty();
-    $('.buttons').empty();
     restart();
   });
 }
