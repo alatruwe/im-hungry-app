@@ -1,11 +1,17 @@
 body {
   font-family: 'Montserrat', sans-serif;
   background-color: #fff;
+  background-image: url('im-hungry-background.jpg');
+  background-position: center center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
   color: #000;
 }
 
 header h1 {
-  text-align: center;
+  display: flex;
+  justify-content: center;
   font-family: 'Playfair Display', serif;
   margin: 40px 0 40px 0;
 }
@@ -17,17 +23,12 @@ header h1 {
   border-style: solid;
   border-color: #000;
   display: flex;
+
   flex-direction: column;
 }
 
-.hidden,
-.hidden-instructions {
+.hidden {
   display: none;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
 }
 
 /* buttons */
@@ -39,4 +40,8 @@ form {
 .btn {
   margin: 20px 0 20px 0;
   width: auto;
+}
+
+/* deskstop view > 600px */
+@media all and (min-width: 600px) {
 }
