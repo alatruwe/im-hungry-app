@@ -55,12 +55,28 @@ function displayRecipe(details) {
   const recipeId = details.recipes[0].id;
   getNutrition(recipeId).then((responseJson) => displayNutrition(responseJson));
 
+  const recipeIngredients = details.recipes[0].extendedIngredients;
+  const meatIngredients = findMeatIngredients(recipeIngredients);
+
   $('.recipe-content').removeClass('hidden');
   $('.start-recipe').addClass('hidden');
 }
 
-function displayNutrition(details) {
+function findMeatIngredients(details) {
+  console.log('this is extendedIngredients:');
   console.log(details);
+  let meatIngredients = '';
+
+  for (let i = 0; i < details.length; i++) {
+    if (details[i].aisle === 'Meat') {
+      meatIngredients = details[i].name;
+    }
+  }
+  console.log(meatIngredients);
+  return meatIngredients;
+}
+
+function displayNutrition(details) {
   $('.recipe-content').append(`
     <p class="nutrition-content">Nutrition: </p>
     <p class="carbs">carbs: ${details.carbs}</p>
