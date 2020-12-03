@@ -3,14 +3,14 @@
 - API key: 306dc4a6c06d4f93835642153baafd56
 - Base URL: https://api.spoonacular.com/
 */
-const baseUrl = 'https://api.spoonacular.com/recipes/';
-const randomRecipeEndpoint = 'random';
+const baseUrl = 'https://api.spoonacular.com/';
+const randomRecipeEndpoint = 'recipes/random';
 const nutritionEndpoint = '/nutritionWidget.json';
+const winePairingEndpoint = 'food/wine/pairing';
 const apiKey = '306dc4a6c06d4f93835642153baafd56';
 
 /******** RENDER FUNCTIONS ********/
 function displayRecipe(details) {
-  console.log(details);
   // add recipe pic
   if (details.recipes[0].image.length === 0) {
     $('.recipe-content').append(
@@ -55,24 +55,24 @@ function displayRecipe(details) {
   const recipeId = details.recipes[0].id;
   getNutrition(recipeId).then((responseJson) => displayNutrition(responseJson));
 
+  // api call for wine pairing
   const recipeIngredients = details.recipes[0].extendedIngredients;
   const meatIngredients = findMeatIngredients(recipeIngredients);
+  getWinePairing(meatIngredients).then((responseJson) =>
+    displayWinePairing(responseJson)
+  );
 
   $('.recipe-content').removeClass('hidden');
   $('.start-recipe').addClass('hidden');
 }
 
 function findMeatIngredients(details) {
-  console.log('this is extendedIngredients:');
-  console.log(details);
   let meatIngredients = '';
-
   for (let i = 0; i < details.length; i++) {
     if (details[i].aisle === 'Meat') {
       meatIngredients = details[i].name;
     }
   }
-  console.log(meatIngredients);
   return meatIngredients;
 }
 
@@ -92,6 +92,30 @@ function displayInstructions() {
   ).addClass('hidden');
   // display instructions
   $('.instructions, .end-recipe').removeClass('hidden-instructions');
+}
+
+function displayWinePairing(details) {
+  const wineList = details.pairedWines;
+  $('.recipe-content').append(
+    `
+    <div>
+      <h3>Wine pairing:</h3>
+      <p>We suggest:</p>
+      <ul>` +
+      getWineList(wineList) +
+      `</ul>
+      <p>${details.pairingText}</p>
+    </div>
+    `
+  );
+}
+
+function getWineList(details) {
+  let wineList = '';
+  for (let i = 0; i < details.length; i++) {
+    wineList += '<li>' + details[i] + '</li>';
+  }
+  return wineList;
 }
 
 function restart() {
@@ -142,9 +166,30 @@ function getNutrition(recipeId) {
   };
   const queryString = buildQueryParams(params);
   const apiNutrition =
-    baseUrl + recipeId + nutritionEndpoint + '?' + queryString;
+    baseUrl + 'recipes/' + recipeId + nutritionEndpoint + '?' + queryString;
 
   return fetch(apiNutrition)
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error(response.statusText);
+    })
+    .catch((error) => {
+      $('.recipe-content').text(`An error occured: ${error.message}`);
+    });
+}
+
+function getWinePairing(meatIngredients) {
+  // api call for nutrition details
+  const params = {
+    apiKey: apiKey,
+    food: meatIngredients,
+  };
+  const queryString = buildQueryParams(params);
+  const apiWinePairing = baseUrl + winePairingEndpoint + '?' + queryString;
+
+  return fetch(apiWinePairing)
     .then((response) => {
       if (response.ok) {
         return response.json();
