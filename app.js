@@ -13,47 +13,43 @@ const apiKey = '306dc4a6c06d4f93835642153baafd56';
 function displayRecipe(details) {
   // add recipe pic
   if (details.recipes[0].image.length === 0) {
-    $('.recipe-content').append(
+    $('.recipe-img').append(
       `<h3>We don't have a picture for this recipe, but we're sure it's delicious!</h3>`
     );
   } else {
-    $('.recipe-content').append(
+    $('.recipe-img').append(
       `<img src="${details.recipes[0].image}" width=100% alt="picture of the dish">`
     );
   }
-  // add title, time and servings
-  $('.recipe-content').append(
-    `
-    <h2 class="title">${details.recipes[0].title}</h2>
-    <p class="time">Ready in: ${details.recipes[0].readyInMinutes} minutes</p>
-    <p class="servings">Servings: ${details.recipes[0].servings}</p>
 
-    `
+  // add title and recipe-info (time, servings and nutrition)
+  $('.recipe-title').append(
+    `<h2 class="title">${details.recipes[0].title}</h2>`
   );
-  // add and hide recipe instructions
-  if (details.recipes[0].instructions.length === 0) {
-    $('.recipe-content').append(
-      `<h3 class="instructions hidden-instructions">Sorry, we don't have the instructions for this recipe</h3>`
-    );
-  } else {
-    $('.recipe-content').append(
-      `<div class="instructions hidden-instructions">
-        <h3>Instructions:</h3>` +
-        details.recipes[0].instructions +
-        `</div>`
-    );
-  }
-  // add buttons
-  $('.buttons').append(
-    `
-    <input class="btn accept-recipe" value="Yum! I want that" type="submit">
-    <input class="btn refuse-recipe" value="No thank you!"type="submit">
-    <input class="btn end-recipe hidden-instructions" value="Done" type="submit">
-    `
+  $('.time-servings-info').append(
+    `<h3 class="time">Ready in: ${details.recipes[0].readyInMinutes} minutes</h3>
+    <h3 class="servings">Servings: ${details.recipes[0].servings}</h3>`
   );
   // call api for nutrition info
   const recipeId = details.recipes[0].id;
   getNutrition(recipeId).then((responseJson) => displayNutrition(responseJson));
+  // display recipe-info and accept/refuse buttons
+  $('.recipe-info, .accept-recipe, .refuse-recipe').removeClass('hidden');
+  $('.start').addClass('hidden');
+
+  // add recipe instructions
+  if (details.recipes[0].instructions.length === 0) {
+    $('.instructions').append(
+      `<h3>Sorry, we don't have the instructions for this recipe</h3>`
+    );
+  } else {
+    $('.instructions').append(
+      `<div>
+        <h3>Instructions:</h3>
+        <p>${details.recipes[0].instructions}</p>
+      </div>`
+    );
+  }
 
   // api call for wine pairing
   const recipeIngredients = details.recipes[0].extendedIngredients;
@@ -61,9 +57,6 @@ function displayRecipe(details) {
   getWinePairing(meatIngredients).then((responseJson) =>
     displayWinePairing(responseJson)
   );
-
-  $('.recipe-content').removeClass('hidden');
-  $('.start-recipe').addClass('hidden');
 }
 
 function findMeatIngredients(details) {
@@ -77,8 +70,8 @@ function findMeatIngredients(details) {
 }
 
 function displayNutrition(details) {
-  $('.recipe-content').append(`
-    <p class="nutrition-content">Nutrition: </p>
+  $('.nutrition-info').append(`
+    <h3>Nutrition: </h3>
     <p class="carbs">carbs: ${details.carbs}</p>
     <p class="fat">fat: ${details.fat}</p>
     <p class="protein">protein: ${details.protein}</p>
@@ -86,26 +79,21 @@ function displayNutrition(details) {
 }
 
 function displayInstructions() {
-  // hide time, servings, buttons and display instructions and end button
-  $(
-    '.time, .servings, .nutrition-content, .carbs, .fat, .protein, .accept-recipe, .refuse-recipe'
-  ).addClass('hidden');
+  // hide recipe-info, buttons and display instructions and end button
+  $('.recipe-info, .accept-recipe, .refuse-recipe').addClass('hidden');
   // display instructions
-  $('.instructions, .end-recipe').removeClass('hidden-instructions');
+  $('.instructions, .wine-pairing, .end-recipe').removeClass('hidden');
 }
 
 function displayWinePairing(details) {
   const wineList = details.pairedWines;
-  $('.recipe-content').append(
-    `
-    <div>
-      <h3>Wine pairing:</h3>
+  $('.wine-pairing').append(
+    `<h3>Wine pairing:</h3>
       <p>We suggest:</p>
       <ul>` +
       getWineList(wineList) +
       `</ul>
       <p>${details.pairingText}</p>
-    </div>
     `
   );
 }
@@ -120,11 +108,11 @@ function getWineList(details) {
 
 function restart() {
   //display start screen
-  $('.recipe-content').addClass('hidden');
-  $('.buttons').empty();
-  $('.buttons')
-    .append(`<input class="btn start-recipe" value="Find a recipe" type="submit">
-  `);
+  $(
+    '.recipe-img, .recipe-title, .time-servings-info, .nutrition-info, .instructions, .wine-pairing'
+  ).empty();
+  $('.instructions, .wine-pairing, .end-recipe').addClass('hidden');
+  $('.start').removeClass('hidden');
 }
 
 /******** API CALL FUNCTIONS ********/
@@ -155,7 +143,7 @@ function getRandomRecipe() {
       throw new Error(response.statusText);
     })
     .catch((error) => {
-      $('.recipe-content').text(`An error occured: ${error.message}`);
+      $('.section').text(`An error occured: ${error.message}`);
     });
 }
 
@@ -204,7 +192,7 @@ function getWinePairing(meatIngredients) {
 /******** EVENT HANDLER FUNCTIONS ********/
 function handleGetRecipe() {
   // event click button
-  $('.buttons').on('click', '.start-recipe', (event) => {
+  $('.buttons').on('click', '.start', (event) => {
     event.preventDefault();
     getRandomRecipe().then((responseJson) => displayRecipe(responseJson));
   });
@@ -223,7 +211,9 @@ function handleRefuseRecipe() {
   $('.buttons').on('click', '.refuse-recipe', (event) => {
     event.preventDefault();
     // display new recipe
-    $('.recipe-content, .buttons').empty();
+    $(
+      '.recipe-img, .recipe-title, .time-servings-info, .nutrition-info, .instructions, .wine-pairing'
+    ).empty();
     getRandomRecipe().then((responseJson) => displayRecipe(responseJson));
   });
 }
@@ -232,7 +222,6 @@ function handleRestart() {
   // event click Done button
   $('.buttons').on('click', '.end-recipe', (event) => {
     event.preventDefault();
-    $('.recipe-content').empty();
     restart();
   });
 }

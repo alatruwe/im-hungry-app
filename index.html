@@ -16,11 +16,33 @@
   <header>
     <h1>I'm hungry!</h1>
   </header>
-  <main class="wrapper">
-    <div class="recipe-content hidden"></div>
-    <div class="buttons">
-      <input class="btn start-recipe" value="Find a recipe" type="submit">
-    </div> 
+  <main>
+    <article class="wrapper">
+      <section>
+        <div class="recipe-img"></div>
+        <h2 class="recipe-title"></h2>
+        <div class="recipe-info hidden">
+          <div class="time-servings-info"></div>
+          <div class="nutrition-info"></div>
+        </div>
+        <div>
+          <div class="recipe-details-btn">
+            <input class="instruction-btn hidden" value="instructions" type="submit">
+            <input class="wine-pairing-btn hidden" value="wine" type="submit">    
+          </div>
+          <div class="recipe-details">
+            <div class='instructions hidden'></div>
+            <div class='wine-pairing hidden'></div>
+          </div>
+        </div>
+      </section>
+      <div class="buttons">
+        <input class="btn start" value="Find a recipe" type="submit">
+        <input class="btn accept-recipe hidden" value="accept" type="submit">
+        <input class="btn refuse-recipe hidden" value="refuse" type="submit">
+        <input class="btn end-recipe hidden" value="end" type="submit">
+      </div>
+    </article>
   </main>
   <script src="https://code.jquery.com/jquery-3.4.1.slim.js" crossorigin="anonymous"></script>
   <script src="app.js"></script>
