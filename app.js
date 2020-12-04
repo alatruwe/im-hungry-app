@@ -87,15 +87,23 @@ function displayInstructions() {
 
 function displayWinePairing(details) {
   const wineList = details.pairedWines;
-  $('.wine-pairing').append(
-    `<h3>Wine pairing:</h3>
-      <p>We suggest:</p>
-      <ul>` +
-      getWineList(wineList) +
-      `</ul>
-      <p>${details.pairingText}</p>
-    `
-  );
+  console.log(wineList);
+  if (wineList.length === 0) {
+    $('.wine-pairing').append(
+      `<h3>Wine pairing:</h3>
+      <p>We don't have a suggestion for this recipe:</p>`
+    );
+  } else {
+    $('.wine-pairing').append(
+      `<h3>Wine pairing:</h3>
+        <p>We suggest:</p>
+        <ul>` +
+        getWineList(wineList) +
+        `</ul>
+        <p>${details.pairingText}</p>
+      `
+    );
+  }
 }
 
 function getWineList(details) {
