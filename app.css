@@ -53,6 +53,10 @@ header h1 {
   border: none;
 }
 
+.btn:focus {
+  outline: 1px solid #000 !important;
+}
+
 /* deskstop view > 600px */
 @media all and (min-width: 600px) {
 }
