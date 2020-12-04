@@ -1,11 +1,10 @@
 body {
   font-family: 'Montserrat', sans-serif;
-  background-color: #fff;
-  background-image: url('im-hungry-background.jpg');
-  background-position: center center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-size: cover;
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.65),
+      rgba(255, 255, 255, 0.65)
+    ),
+    url(im-hungry-background.jpg) no-repeat center center / cover fixed;
   color: #000;
 }
 
@@ -20,11 +19,17 @@ header h1 {
   margin: auto;
   padding: 8%;
   width: 70%;
-  border-style: solid;
-  border-color: #000;
   display: flex;
-
+  justify-content: flex-end;
   flex-direction: column;
+}
+
+.recipe-title {
+  font-size: 0.85em;
+}
+
+.recipe-info {
+  font-size: 0.75em;
 }
 
 .hidden {
@@ -34,18 +39,19 @@ header h1 {
 /* buttons */
 .buttons {
   text-align: center;
+  padding-top: ;
 }
 .btn:after {
   content: ''; /* This is necessary for the pseudo element to work. */
   display: block; /* This will put the pseudo element on its own line. */
-  width: 25%; /* Change this to whatever width you want to have before hover. */
+  width: 0%;
   padding-top: 5px; /* This creates some space between the element and the border. */
-  border-bottom: 1px solid black; /* This creates the border. Replace black with whatever color you want. */
-  transition: 0.5s; /* This establishes the amount of time in seconds the animation should take from start to finish */
+  border-bottom: 1px solid black;
+  transition: 0.5s;
 }
 
 .btn:hover:after {
-  width: 100%; /* This will be the new width of your border when on hover */
+  width: 100%;
 }
 .btn {
   width: auto;
@@ -57,6 +63,24 @@ header h1 {
   outline: 1px solid #000 !important;
 }
 
-/* deskstop view > 600px */
-@media all and (min-width: 600px) {
+/* deskstop view > 640px */
+@media all and (min-width: 640px) {
+  .wrapper {
+    margin: auto;
+    padding: 8%;
+    width: 70%;
+    border-style: solid;
+    border-color: #000;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+  }
+
+  body {
+    background: linear-gradient(
+        rgba(255, 255, 255, 0.15),
+        rgba(255, 255, 255, 0.15)
+      ),
+      url(im-hungry-background.jpg) no-repeat center center / cover fixed;
+  }
 }
