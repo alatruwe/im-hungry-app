@@ -15,6 +15,7 @@ header h1 {
   margin: 40px 0 40px 0;
 }
 /* main */
+
 .wrapper {
   margin: auto;
   padding: 8%;
@@ -39,7 +40,6 @@ header h1 {
 /* buttons */
 .buttons {
   text-align: center;
-  padding-top: ;
 }
 .btn:after {
   content: ''; /* This is necessary for the pseudo element to work. */
@@ -66,21 +66,11 @@ header h1 {
 /* deskstop view > 640px */
 @media all and (min-width: 640px) {
   .wrapper {
-    margin: auto;
-    padding: 8%;
-    width: 70%;
-    border-style: solid;
-    border-color: #000;
+    margin-right: 0;
+    padding-right: 8%;
+    padding-top: 3%;
+    width: 35%;
     display: flex;
-    justify-content: flex-end;
     flex-direction: column;
-  }
-
-  body {
-    background: linear-gradient(
-        rgba(255, 255, 255, 0.15),
-        rgba(255, 255, 255, 0.15)
-      ),
-      url(im-hungry-background.jpg) no-repeat center center / cover fixed;
   }
 }
