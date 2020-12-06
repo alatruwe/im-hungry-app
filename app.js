@@ -10,8 +10,30 @@ const winePairingEndpoint = 'food/wine/pairing';
 const apiKey = '306dc4a6c06d4f93835642153baafd56';
 
 /******** RENDER FUNCTIONS ********/
-function displayRecipe(details) {
-  // add recipe pic
+function displayRecipeElements(details) {
+  console.log(details);
+  displayImage(details);
+  displayTitle(details);
+  displayRecipeInfo(details);
+  addInstructions(details);
+
+  // api call for nutrition info
+  const recipeId = details.recipes[0].id;
+  getNutrition(recipeId).then((responseJson) => displayNutrition(responseJson));
+
+  // api call for wine pairing
+  const recipeIngredients = details.recipes[0].extendedIngredients;
+  const meatIngredients = findMeatIngredients(recipeIngredients);
+  getWinePairing(meatIngredients).then((responseJson) =>
+    displayWinePairing(responseJson)
+  );
+
+  // display recipe-info and accept/refuse buttons
+  $('.recipe-info, .accept-recipe, .refuse-recipe').removeClass('hidden');
+  $('.start').addClass('hidden');
+}
+
+function displayImage(details) {
   if (details.recipes[0].image.length === 0) {
     $('.recipe-img').append(
       `<h3>We don't have a picture for this recipe, but we're sure it's delicious!</h3>`
@@ -21,23 +43,31 @@ function displayRecipe(details) {
       `<img src="${details.recipes[0].image}" width=100% alt="picture of the dish">`
     );
   }
+}
 
-  // add title and recipe-info (time, servings and nutrition)
+function displayTitle(details) {
   $('.recipe-title').append(
     `<h2 class="title">${details.recipes[0].title}</h2>`
   );
+}
+
+function displayRecipeInfo(details) {
   $('.time-servings-info').append(
     `<h3 class="time">Ready in: ${details.recipes[0].readyInMinutes} minutes</h3>
     <h3 class="servings">Servings: ${details.recipes[0].servings}</h3>`
   );
-  // call api for nutrition info
-  const recipeId = details.recipes[0].id;
-  getNutrition(recipeId).then((responseJson) => displayNutrition(responseJson));
-  // display recipe-info and accept/refuse buttons
-  $('.recipe-info, .accept-recipe, .refuse-recipe').removeClass('hidden');
-  $('.start').addClass('hidden');
+}
 
-  // add recipe instructions
+function displayNutrition(details) {
+  $('.nutrition-info').append(`
+    <h3>Nutrition: </h3>
+    <p class="carbs">carbs: ${details.carbs}</p>
+    <p class="fat">fat: ${details.fat}</p>
+    <p class="protein">protein: ${details.protein}</p>
+  `);
+}
+
+function addInstructions(details) {
   if (details.recipes[0].instructions.length === 0) {
     $('.instructions').append(
       `<h3>Sorry, we don't have the instructions for this recipe</h3>`
@@ -50,32 +80,6 @@ function displayRecipe(details) {
       </div>`
     );
   }
-
-  // api call for wine pairing
-  const recipeIngredients = details.recipes[0].extendedIngredients;
-  const meatIngredients = findMeatIngredients(recipeIngredients);
-  getWinePairing(meatIngredients).then((responseJson) =>
-    displayWinePairing(responseJson)
-  );
-}
-
-function findMeatIngredients(details) {
-  let meatIngredients = '';
-  for (let i = 0; i < details.length; i++) {
-    if (details[i].aisle === 'Meat') {
-      meatIngredients = details[i].name;
-    }
-  }
-  return meatIngredients;
-}
-
-function displayNutrition(details) {
-  $('.nutrition-info').append(`
-    <h3>Nutrition: </h3>
-    <p class="carbs">carbs: ${details.carbs}</p>
-    <p class="fat">fat: ${details.fat}</p>
-    <p class="protein">protein: ${details.protein}</p>
-  `);
 }
 
 function displayInstructions() {
@@ -104,6 +108,16 @@ function displayWinePairing(details) {
       `
     );
   }
+}
+
+function findMeatIngredients(details) {
+  let meatIngredients = '';
+  for (let i = 0; i < details.length; i++) {
+    if (details[i].aisle === 'Meat') {
+      meatIngredients = details[i].name;
+    }
+  }
+  return meatIngredients;
 }
 
 function getWineList(details) {
@@ -202,7 +216,9 @@ function handleGetRecipe() {
   // event click button
   $('.buttons').on('click', '.start', (event) => {
     event.preventDefault();
-    getRandomRecipe().then((responseJson) => displayRecipe(responseJson));
+    getRandomRecipe().then((responseJson) =>
+      displayRecipeElements(responseJson)
+    );
   });
 }
 
@@ -222,7 +238,9 @@ function handleRefuseRecipe() {
     $(
       '.recipe-img, .recipe-title, .time-servings-info, .nutrition-info, .instructions, .wine-pairing'
     ).empty();
-    getRandomRecipe().then((responseJson) => displayRecipe(responseJson));
+    getRandomRecipe().then((responseJson) =>
+      displayRecipeElements(responseJson)
+    );
   });
 }
 
