@@ -11,7 +11,6 @@ const apiKey = '306dc4a6c06d4f93835642153baafd56';
 
 /******** RENDER FUNCTIONS ********/
 function displayRecipeElements(details) {
-  console.log(details);
   displayImage(details);
   displayTitle(details);
   displayRecipeInfo(details);
@@ -46,25 +45,52 @@ function displayImage(details) {
 }
 
 function displayTitle(details) {
-  $('.recipe-title').append(
-    `<h2 class="title">${details.recipes[0].title}</h2>`
-  );
+  if (details.recipes[0].title.length === 0) {
+    $('.recipe-title').append(
+      `<h2 class="title">Oops, we don't know the name of this recipe</h2>`
+    );
+  } else {
+    $('.recipe-title').append(
+      `<h2 class="title">${details.recipes[0].title}</h2>`
+    );
+  }
 }
 
 function displayRecipeInfo(details) {
-  $('.time-servings-info').append(
-    `<h3 class="time">Ready in: ${details.recipes[0].readyInMinutes} minutes</h3>
-    <h3 class="servings">Servings: ${details.recipes[0].servings}</h3>`
-  );
+  if (details.recipes[0].readyInMinutes === 0) {
+    $('.time-servings-info').append(
+      `<h3 class="time">Ready in: oops, we don't know how long this recipe takes to make</h3>`
+    );
+  } else {
+    $('.time-servings-info').append(
+      `<h3 class="time">Ready in: ${details.recipes[0].readyInMinutes} minutes</h3>`
+    );
+  }
+  if (details.recipes[0].servings === 0) {
+    $('.time-servings-info').append(
+      `<h3 class="servings">Servings: oops, we don't know how many servings this recipe yields</h3>`
+    );
+  } else {
+    $('.time-servings-info').append(
+      `<h3 class="servings">Servings: ${details.recipes[0].servings}</h3>`
+    );
+  }
 }
 
 function displayNutrition(details) {
-  $('.nutrition-info').append(`
+  if (details.carbs === 0 || details.fat === 0 || details.protein === 0) {
+    $('.nutrition-info').append(`
+    <h3>Nutrition: </h3>
+    <p class="carbs">Oops, we don't have this information</p>
+  `);
+  } else {
+    $('.nutrition-info').append(`
     <h3>Nutrition: </h3>
     <p class="carbs">carbs: ${details.carbs}</p>
     <p class="fat">fat: ${details.fat}</p>
     <p class="protein">protein: ${details.protein}</p>
   `);
+  }
 }
 
 function addInstructions(details) {
