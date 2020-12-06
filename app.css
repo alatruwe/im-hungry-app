@@ -1,3 +1,4 @@
+/* mobile view < 640px */
 body {
   font-family: 'Montserrat', sans-serif;
   background: linear-gradient(
@@ -27,7 +28,6 @@ header h1 {
 }
 
 /* main */
-
 .wrapper {
   margin: auto;
   padding: 8%;
@@ -49,6 +49,7 @@ img {
   margin: 5% 0 5% 0;
 }
 
+/* display */
 .hidden {
   display: none;
 }
@@ -62,10 +63,10 @@ img {
 }
 
 .btn:after {
-  content: ''; /* This is necessary for the pseudo element to work. */
-  display: block; /* This will put the pseudo element on its own line. */
+  content: '';
+  display: block;
   width: 0%;
-  padding-top: 5px; /* This creates some space between the element and the border. */
+  padding-top: 5px;
   border-bottom: 1px solid black;
   transition: 0.5s;
 }

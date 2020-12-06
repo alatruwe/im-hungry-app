@@ -1,8 +1,5 @@
 'use strict';
-/* what I need to call the API:
-- API key: 306dc4a6c06d4f93835642153baafd56
-- Base URL: https://api.spoonacular.com/
-*/
+
 const baseUrl = 'https://api.spoonacular.com/';
 const randomRecipeEndpoint = 'recipes/random';
 const nutritionEndpoint = '/nutritionWidget.json';
@@ -11,11 +8,6 @@ const apiKey = '306dc4a6c06d4f93835642153baafd56';
 
 /******** RENDER FUNCTIONS ********/
 function displayRecipeElements(details) {
-  displayImage(details);
-  displayTitle(details);
-  displayRecipeInfo(details);
-  addInstructions(details);
-
   // api call for nutrition info
   const recipeId = details.recipes[0].id;
   getNutrition(recipeId).then((responseJson) => displayNutrition(responseJson));
@@ -27,7 +19,11 @@ function displayRecipeElements(details) {
     displayWinePairing(responseJson)
   );
 
-  // display recipe-info and accept/refuse buttons
+  displayImage(details);
+  displayTitle(details);
+  displayRecipeInfo(details);
+  addInstructions(details);
+
   $('.recipe-info, .accept-recipe, .refuse-recipe').removeClass('hidden');
   $('.start').addClass('hidden');
 }
@@ -57,6 +53,7 @@ function displayTitle(details) {
 }
 
 function displayRecipeInfo(details) {
+  // time info
   if (details.recipes[0].readyInMinutes === 0) {
     $('.time-servings-info').append(
       `<h3 class="time">Ready in: oops, we don't know how long this recipe takes to make</h3>`
@@ -66,6 +63,7 @@ function displayRecipeInfo(details) {
       `<h3 class="time">Ready in: ${details.recipes[0].readyInMinutes} minutes</h3>`
     );
   }
+  // servings info
   if (details.recipes[0].servings === 0) {
     $('.time-servings-info').append(
       `<h3 class="servings">Servings: oops, we don't know how many servings this recipe yields</h3>`
@@ -109,9 +107,7 @@ function addInstructions(details) {
 }
 
 function displayInstructions() {
-  // hide recipe-info, buttons and display instructions and end button
   $('.recipe-info, .accept-recipe, .refuse-recipe').addClass('hidden');
-  // display instructions
   $('.instructions, .wine-pairing, .end-recipe').removeClass('hidden');
 }
 
@@ -155,7 +151,6 @@ function getWineList(details) {
 }
 
 function restart() {
-  //display start screen
   $(
     '.recipe-img, .recipe-title, .time-servings-info, .nutrition-info, .instructions, .wine-pairing'
   ).empty();
@@ -168,7 +163,6 @@ function buildQueryParams(params) {
   const queryItems = Object.keys(params).map(
     (key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`
   );
-  //return string with params
   return queryItems.join('&');
 }
 
@@ -217,7 +211,7 @@ function getNutrition(recipeId) {
 }
 
 function getWinePairing(meatIngredients) {
-  // api call for nutrition details
+  // api call for wine pairing
   const params = {
     apiKey: apiKey,
     food: meatIngredients,
@@ -239,7 +233,6 @@ function getWinePairing(meatIngredients) {
 
 /******** EVENT HANDLER FUNCTIONS ********/
 function handleGetRecipe() {
-  // event click button
   $('.buttons').on('click', '.start', (event) => {
     event.preventDefault();
     getRandomRecipe().then((responseJson) =>
@@ -249,7 +242,6 @@ function handleGetRecipe() {
 }
 
 function handleAcceptRecipe() {
-  // event click OK button
   $('.buttons').on('click', '.accept-recipe', (event) => {
     event.preventDefault();
     displayInstructions();
@@ -257,10 +249,8 @@ function handleAcceptRecipe() {
 }
 
 function handleRefuseRecipe() {
-  // event click NO button
   $('.buttons').on('click', '.refuse-recipe', (event) => {
     event.preventDefault();
-    // display new recipe
     $(
       '.recipe-img, .recipe-title, .time-servings-info, .nutrition-info, .instructions, .wine-pairing'
     ).empty();
@@ -271,7 +261,6 @@ function handleRefuseRecipe() {
 }
 
 function handleRestart() {
-  // event click Done button
   $('.buttons').on('click', '.end-recipe', (event) => {
     event.preventDefault();
     restart();
