@@ -9,7 +9,11 @@ Homepage:
 
 Recipe browsing:
 
+![browsing recipe](screenshots/recipe-browsing.png)
+
 Chosen recipe details:
+
+![chosen recipe details](screenshots/chosen-recipe-details.png)
 
 ## Built with
 * HTML
