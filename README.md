@@ -1,7 +1,21 @@
 # im-hungry-app
+A recipe finder application.
+Find inspiration in your kitchen by browsing recipes, get cooking instructions and wine pairing suggestions once you've selected a recipe.
 
-Offers a random recipe to cook.
+## Screenshots
+Homepage:
 
-The user can browse several recipes and choose the one they want.
+![homepage](screenshots/homepage.png)
 
-When a recipe is selected, the user gets the instructions to cook it.
+Recipe browsing:
+
+Chosen recipe details:
+
+## Built with
+* HTML
+* CSS
+* Javascript
+* jQuery
+
+## Demo
+- [Live demo](https://alatruwe.github.io/im-hungry-app/)
