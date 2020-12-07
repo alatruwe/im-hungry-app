@@ -113,7 +113,6 @@ function displayInstructions() {
 
 function displayWinePairing(details) {
   const wineList = details.pairedWines;
-  console.log(wineList);
   if (wineList.length === 0) {
     $('.wine-pairing').append(
       `<h3>Wine pairing:</h3>
